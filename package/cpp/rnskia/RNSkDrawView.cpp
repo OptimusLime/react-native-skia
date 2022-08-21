@@ -150,20 +150,30 @@ void RNSkDrawView::drawInCanvas(std::shared_ptr<JsiSkCanvas> canvas,
 
 sk_sp<SkImage> RNSkDrawView::makeImageSnapshot(std::shared_ptr<SkRect> bounds) {
   // Assert width/height
+    RNSkLogger::logToConsole("Make snapshot start0");
   auto surface = SkSurface::MakeRasterN32Premul(getScaledWidth(), getScaledHeight());
+    RNSkLogger::logToConsole("Make snapshot start1");
   auto canvas = surface->getCanvas();
+    RNSkLogger::logToConsole("Make snapshot start2");
   auto jsiCanvas = std::make_shared<JsiSkCanvas>(_platformContext);
+    RNSkLogger::logToConsole("Make snapshot start3");
   jsiCanvas->setCanvas(canvas);
+    RNSkLogger::logToConsole("Make snapshot start4");
   
   milliseconds ms = duration_cast<milliseconds>(
       system_clock::now().time_since_epoch());
+    RNSkLogger::logToConsole("Make snapshot start5");
   
   drawInCanvas(jsiCanvas, getScaledWidth(), getScaledHeight(), ms.count() / 1000);
+    RNSkLogger::logToConsole("Make snapshot start6");
   
+    RNSkLogger::logToConsole("Make snapshot start7");
   if(bounds != nullptr) {
     SkIRect b = SkIRect::MakeXYWH(bounds->x(), bounds->y(), bounds->width(), bounds->height());
+    RNSkLogger::logToConsole("Make snapshot start7a");
     return surface->makeImageSnapshot(b);
   } else {
+    RNSkLogger::logToConsole("Make snapshot start7b");
     return surface->makeImageSnapshot();
   }
 }
