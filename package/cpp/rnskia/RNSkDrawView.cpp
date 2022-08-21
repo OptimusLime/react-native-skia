@@ -149,31 +149,32 @@ void RNSkDrawView::drawInCanvas(std::shared_ptr<JsiSkCanvas> canvas,
 }
 
 sk_sp<SkImage> RNSkDrawView::makeImageSnapshot(std::shared_ptr<SkRect> bounds) {
+    auto runtime = getPlatformContext()->getJsRuntime();
   // Assert width/height
-    RNSkLogger::logToJavascriptConsole("Make snapshot start0");
+    RNSkLogger::logToJavascriptConsole(runtime, "Make snapshot start0");
   auto surface = SkSurface::MakeRasterN32Premul(getScaledWidth(), getScaledHeight());
-    RNSkLogger::logToJavascriptConsole("Make snapshot start1");
+    RNSkLogger::logToJavascriptConsole(runtime,"Make snapshot start1");
   auto canvas = surface->getCanvas();
-    RNSkLogger::logToJavascriptConsole("Make snapshot start2");
+    RNSkLogger::logToJavascriptConsole(runtime,"Make snapshot start2");
   auto jsiCanvas = std::make_shared<JsiSkCanvas>(_platformContext);
-    RNSkLogger::logToJavascriptConsole("Make snapshot start3");
+    RNSkLogger::logToJavascriptConsole(runtime,"Make snapshot start3");
   jsiCanvas->setCanvas(canvas);
-    RNSkLogger::logToJavascriptConsole("Make snapshot start4");
+    RNSkLogger::logToJavascriptConsole(runtime,"Make snapshot start4");
   
   milliseconds ms = duration_cast<milliseconds>(
       system_clock::now().time_since_epoch());
-    RNSkLogger::logToJavascriptConsole("Make snapshot start5");
+    RNSkLogger::logToJavascriptConsole(runtime,"Make snapshot start5");
   
   drawInCanvas(jsiCanvas, getScaledWidth(), getScaledHeight(), ms.count() / 1000);
-    RNSkLogger::logToJavascriptConsole("Make snapshot start6");
+    RNSkLogger::logToJavascriptConsole(runtime,"Make snapshot start6");
   
-    RNSkLogger::logToJavascriptConsole("Make snapshot start7");
+    RNSkLogger::logToJavascriptConsole(runtime,"Make snapshot start7");
   if(bounds != nullptr) {
     SkIRect b = SkIRect::MakeXYWH(bounds->x(), bounds->y(), bounds->width(), bounds->height());
-    RNSkLogger::logToJavascriptConsole("Make snapshot start7a");
+    RNSkLogger::logToJavascriptConsole(runtime,"Make snapshot start7a");
     return surface->makeImageSnapshot(b);
   } else {
-    RNSkLogger::logToJavascriptConsole("Make snapshot start7b");
+    RNSkLogger::logToJavascriptConsole(runtime,"Make snapshot start7b");
     return surface->makeImageSnapshot();
   }
 }
